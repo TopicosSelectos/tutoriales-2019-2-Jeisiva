@@ -1,0 +1,348 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+2.1 Equality 
+```{r}
+ 5 == (2 + 3)   
+"Intermedio" != "r"   
+TRUE != FALSE   
+"Rquitecto" != "rquitecto"
+TRUE == FALSE
+-6 * 14 != 17 -101
+TRUE == 1
+"perros" < "gatos"
+FALSE < TRUE
+instagram <- c(4, 7, 1, 5, 9, 13, 15)
+facebook <- c(6, 2, 10, 7, 5, 8, 13)
+instagram > 10
+instagram > facebook
+visitas <- matrix(c(instagram, facebook), nrow = 2, byrow = TRUE)
+visitas
+```
+
+2.2 Logical Operators
+
+```{r}
+ultimo <- tail(instagram,1)
+10 < ultimo | ultimo < 5
+10 < ultimo & ultimo < 5
+instagram > 10 & facebook < 10
+instagram > 10 | facebook < 10
+visitas > 10 & visitas <= 13
+```
+
+2.3 Conditional Statements
+
+```{r}
+medio <- "Instagram"
+
+num_vis <- 15
+
+if(medio == "Instagram"){
+  print("Mostrando informacion de Instagram")
+}
+
+if(num_vis == 10){
+  print("Felicidades, eres popular!")
+}
+
+if(num_vis > 10){
+  print("Felicidades, eres popular!")
+}else {
+  print("Nadie te conoce")
+}
+
+if(medio == "Instagram"){
+  print("Mostrando informacion de Instagram")
+} else if (medio == "Facebook"){
+  print("Mostrando informacion de Facebook")
+} else {
+  print("Medio desconocido")
+}
+
+insta <- 20
+fb <- 13
+
+if (insta >= 18 & fb >= 18){
+  sms <- 2*(insta+fb)
+} else if (insta < 10 & fb < 10){
+  sms <- .5*(insta+fb)
+} else {
+  sms <- insta + fb
+}
+
+sms
+```
+3. Loops
+
+```{r}
+velocidad <- 40
+while (velocidad > 20) {
+  print("Despacio!")
+  velocidad <- velocidad - 5
+}
+velocidad
+velocidad <- 40
+while (velocidad > 10) {
+  print(paste("Tu velocidd es ", velocidad))
+  if (velocidad > 20){
+    print("Mas despacio!")
+    velocidad <- velocidad - 8
+  } else {
+    print("Perate!")
+    velocidad <- velocidad - 5
+  }
+}
+
+velocidad <- 60
+
+while (velocidad > 30) {
+  print(paste("Tu velocidad es ", velocidad))
+  
+  # Break the while loop when speed exceeds 80
+  if (velocidad > 50) {
+    break
+  }
+  if (velocidad > 40) {
+    print("Slow down big time!")
+    velocidad <- velocidad - 10
+  } else {
+    print("Perate!")
+    velocidad <- velocidad - 5
+  }
+}
+
+primos <- c(2, 3, 5, 7, 11, 13)
+for (p in primos){
+  print(p)
+}
+
+for (i in 1:length(primos)) {
+  print(primos[i])
+}
+
+for (li in instagram) {
+  print(li)
+}
+
+chihuas <- list(pop = 3557000, 
+            cities = c("Juarez", "Chihuahua", "Casas Grandes", "Creel", "Batopilas"), 
+            capital = TRUE)
+
+# Loop version 1
+for (info in chihuas) {
+  print(info)
+}
+
+d1 <- c("O",  "NA",   "X")
+d2 <- c("NA", "O",  "O" )
+d3 <- c("X",  "NA",  "X")
+ttt_data <- c(d1, d2, d3)
+ttt_data
+ttt <- matrix(ttt_data, byrow = TRUE, nrow = 3)
+ttt
+for (i in 1:nrow(ttt)) {
+  for (j in 1:ncol(ttt)) {
+    print(paste("Fila", i, "y columna", j, "hay un(a): ", ttt[i,j]))
+  }
+}
+```
+
+4. Functions
+
+```{r}
+?mean
+help(mean)
+args(mean)
+
+prom_insta <- mean(x=instagram)
+prom_primos <- mean(primos)
+prom_insta
+prom_primos
+
+suma_prom <- mean(instagram+facebook, trim = .2)
+suma_prom
+
+mean(abs(instagram - facebook), na.rm = TRUE)
+
+potencia_cuad <- function(x) {
+  x ^ 2
+}
+# Use the function
+potencia_cuad(5)
+
+dado <- function() {
+  numero <- sample(1:6, size = 1)
+  numero
+}
+
+dado()
+
+potencia_cubo <- function(x, print_info = TRUE) {
+  y <- x ^ 3
+  if (print_info) {
+    print(paste(x, "al cubo es: ", y))
+  }
+  return(y)
+}
+
+# Some calls of the pow_two() function
+potencia_cubo(3)
+```
+
+?? Libraries
+
+```{r}
+library("ggplot2")
+qplot(mtcars$wt, mtcars$hp)
+search()
+```
+5. The Apply Family
+
+```{r}
+pioneros <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
+
+# Split names from birth year
+divide <- strsplit(pioneros, split = ":")
+divide
+divide_min <- lapply(split_math, tolower)
+divide_min
+str(divide_min)
+
+multiplica <- function(x, factor) {
+  x * factor
+}
+lapply(list(1,2,3), multiplica, factor = 5)
+
+select_el <- function(x, index) {
+  x[index]
+}
+nombres <- lapply(divide_min, select_el, index = 1)
+nombres
+
+#Sapply
+
+t1 <- c( 3,  7,  9,  6, -1)
+t2 <- c( 6,  9, 12, 13,  5)
+t3 <- c(4,  8,  3, -1, -3)
+t4 <- c(1,  4,  7,  2, -2)
+t5 <- c(5, 7, 9, 4, 2)
+t6 <- c(-3,  5,  8,  9,  4)
+t7 <- c(3, 6, 9, 4, 1)
+
+
+temp <- list(t1, t2, t3, t4, t5, t6, t7)
+temp
+
+lapply(temp, min)
+sapply(temp, min)
+
+extremes_avg <- function(x) {
+  ( min(x) + max(x) ) / 2
+}
+lapply(temp, extremes_avg)
+sapply(temp, extremes_avg)
+
+extremes <- function(x) {
+  c(min = min(x), max = max(x))
+}
+sapply(temp, extremes)
+lapply(temp, extremes)
+
+bajo_cero <- function(x) {
+  return(x[x < 0])
+}
+congelado_s <- sapply(temp, bajo_cero)
+congelado_s
+congelado_l <- lapply(temp, below_zero)
+congelado_l
+
+identical(freezing_s, freezing_l)
+
+
+prom_temp <- function(x) {
+  cat("La tempreatura promedio es", mean(x), "\n")
+}
+sapply(temp, prom_temp)
+lapply(temp, prom_temp)
+
+basics <- function(x) {
+  c(min = min(x), mean = mean(x), max = max(x))
+}
+vapply(temp, basics, numeric(3))
+
+```
+
+6. Utilities
+
+abs(): Absolute value.
+sum(): Sum of all the values in a data structure.
+mean():Arithmetic mean.
+round(): Round the values to 0 decimal places by default.
+
+```{r}
+errores <- c(2.3, -1.5, 2, -6.5, -3.4, 7.3)
+sum(abs(round(errores)))
+
+v1 <- c(1.5, 2.5, 8.4, 3.7, 6.3)
+v2 <- rev(v1)
+mean(c(abs(v1), abs(v2)))
+
+insta_vec <- unlist(instagram)
+insta_vec
+fb_vec <- unlist(facebook)
+fb_vec
+social_vec <- append(insta_vec, fb_vec)
+social_vec
+sort(social_vec, decreasing = FALSE)
+
+rep(seq(3, 12, by = 3), times = 4)
+
+seq1 <- seq(1, 500, by = 3)
+seq2 <- seq(1200, 900, by = -7)
+sum(seq1) + sum(seq2)
+
+emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org",
+            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
+grepl("edu", emails)
+hits <- grep("edu", emails)
+hits
+emails[hits]
+hits2 <- grep("@.*\\.edu$", emails)
+hits2
+sub("@.*\\.edu$", "@datacamp.edu", emails)
+
+#.*: A usual suspect! It can be read as “any character that is matched zero or more times”.
+#\s: Match a space. The “s” is normally a character, escaping it (\) makes it a metacharacter.
+#[0-9]+: Match the numbers 0 to 9, at least once (+).
+#([0-9]+): The parentheses are used to make parts of the matching string available to define the replacement. The \1 in the replacement argument of sub() gets set to the string that is captured by the regular expression [0-9]+.
+
+
+premios <- c("Gano 1 oscar.",
+  "Gano 1 oscar. Tiene mas premios y 20 nominaciones",
+  "Gano 1 oscar y tiene 2 nominaciones.",
+  "Gano 3 oscares y 27 nominaciones",
+  "Nominado a 3 Golden Globes. Tiene 1 oscar y 3 nominaciones.",
+  "4 oscares y una nominacion")
+sub(".*\\s([0-9]+)\\snominaciones.*$", "\\1", premios)
+
+hoy <- Sys.Date()
+hoy
+unclass(hoy)
+ahora <- sys.time()
+ahora
+unclass(ahora)
+
+day1 <- as.Date("2018-08-18")
+day2 <- as.Date("2018-08-20")
+day3 <- as.Date("2018-08-25")
+day4 <- as.Date("2018-08-31")
+day5 <- as.Date("2018-09-05")
+day5 - day1
+pizza <- c(day1, day2, day3, day4, day5)
+pizza
+day_diff <- diff(pizza)
+day_diff
+```
+
