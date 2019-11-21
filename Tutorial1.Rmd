@@ -1,0 +1,178 @@
+---
+title: "Tutorial"
+author: "jeiruiz"
+date: "9/5/2019"
+output: html_document
+---
+
+INTRODUCTION TO R
+
+2. Intro to basics
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+3.2 + 5.6
+5-10
+6*8
+5/2
+3^7
+9%%3
+manzanas <- 5
+peras <- 8
+print(manzanas)
+frutas <- manzanas + peras
+print(frutas)
+un_numero <- 26
+un_caracter <- "Planeta"
+un_logico <- TRUE
+class(un_caracter)
+class(un_numero)
+class(un_logico)
+```
+
+3. Vectors
+
+```{r}
+vegas <- "Vamos!"
+numeros <- c(5, -1, 23)
+poker <- c(140, -50, 20, -120, 240)
+roulette <- c(-24, -50, 100, -350, 10)
+dias <- c("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+names(poker) <- dias
+names(roulette) <- dias
+total <- poker + roulette
+print(total)
+total_poker <- sum(poker)
+print(total_poker)
+total_roulette <- sum(roulette)
+print(total_roulette)
+total_sem <- (total_poker+total_roulette)
+print(total_sem)
+total_roulette > total_poker
+roulette_selection_vector <- roulette[3:5]
+roulette_selection_vector
+inicio_poker <- poker[c("Lunes", "Martes", "Miercoles")]
+inicio_poker
+mean(inicio_poker)
+selecciona <- poker > 0
+selecciona
+dias_ganados_poker <- poker[selecciona]
+dias_ganados_poker
+selecciona_r <- roulette > 0
+dias_ganados_ruleta <- roulette[selecciona_r]
+dias_ganados_ruleta
+```
+
+
+4. Matrix
+
+```{r}
+matrix(1:9, byrow=FALSE, nrow = 3)
+poker <- c(250, -80, 125)
+roulette <- c(-100, -20, 60)
+blackjack <- c(350, 30, 200)
+ganancias <- c(poker, roulette, blackjack)
+ganancias
+casino_matrix <- matrix(ganancias, nrow = 3, byrow = TRUE)
+casino_matrix
+dias <- c("Viernes", "Sabado", "Domingo")
+juegos <- c("Poker", "Ruleta", "BlackJack")
+colnames(casino_matrix) <- dias
+rownames(casino_matrix) <- juegos
+casino_matrix
+total_pergame <- rowSums(casino_matrix)
+total_pergame
+casino_matrix_wtotals <- cbind(casino_matrix, total_pergame)
+casino_matrix_wtotals
+total_perday <- colSums(casino_matrix_wtotals)
+casino_matrix_wtotals
+total_perday
+```
+
+5. Factors
+
+```{r}
+Teoria <- "Factores para variables categoricas"
+sex_vector <- c("Hombre", "Mujer", "Mujer", "Hombre", "Mujer")
+factor_sex_vector <- factor(sex_vector)
+factor_sex_vector
+vector_animales <- c("Gato", "Perro", "Jirafa", "Leon", "Cerdo")
+class(vector_animales)
+factor_vector_animales <- factor(vector_animales)
+factor_vector_animales
+vector_tempreatura<-c("Alto", "Bajo", "Bajo", "Medio", "Alto")
+factor_vector_temperatura <- factor(vector_tempreatura, order=TRUE, levels = c("Bajo", "Medio", "Alto"))
+factor_vector_temperatura
+vector_encuesta <- c("H", "M", "M", "H", "M", "H")
+factor_vector_encuesta <- factor(vector_encuesta)
+factor_vector_encuesta
+levels(factor_vector_encuesta)<- c("Hombre", "Mujer")
+factor_vector_encuesta
+summary(vector_encuesta)
+summary(factor_vector_encuesta)
+
+#Error de comparacion
+hombres <- factor_vector_encuesta[1]
+mujeres <- factor_vector_encuesta[2]
+hombres
+mujeres
+hombres>mujeres
+
+#Factores ordenados
+vector_velocidad <- c("medio", "lento", "rapido", "medio", "lento")
+factor_vector_velocidad <- factor(vector_velocidad, ordered = TRUE, levels = c("lento", "medio", "rapido"))
+factor_vector_velocidad
+summary(factor_vector_velocidad)
+da1 <- factor_vector_velocidad[3]
+da2 <- factor_vector_velocidad[1]
+da1
+da2
+da1 > da2
+```
+
+6. Data Frames
+
+```{r}
+mtcars
+class(mtcars)
+head(mtcars)
+str(mtcars)
+nombre <- c("Mercurio", "Venus", "Tierra", "Marte", "Jupiter", "Saturno", "Urano", "Neptuno")
+tipo <- c("Planeta Terrestre","Planeta Terrestre", "Planeta Terrestre", "Planeta Terrestre", "Gigante de gas", "Gigante de gas", "Gigante de gas", "Gigante de gas")
+diametro <-c(0.382, 0.949, 1, 0.532, 11.209, 9.449, 4.007, 3.883)
+rotacion <- c(58.64, -243.02, 1, 1.03, 0.41, 0.43, -0.72, 0.67)
+anillos <- c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE)
+nombre
+tipo
+diametro
+rotacion
+anillos
+planetas_df <- data.frame(nombre, tipo, diametro, rotacion, anillos)
+planetas_df
+str(planetas_df)
+planetas_df[2, ]
+```
+
+7. Lists
+
+```{r}
+un_vector <- 1:7
+una_matriz <- matrix(1:9, ncol = 3)
+un_df <- mtcars[1:5,]
+#print(un_vector)
+#print(una_matriz)
+#print(un_df)
+lista1 <- list(un_vector, una_matriz, un_df)
+lista1
+peli <- "El Resplandor"
+act <- c("Jack Nicholson", "Shelley Duvall", "Danny Lloyd", "Scatman Crothers", "Barry Nelson")
+comentarios <- c("Mejor pelicula de terror que he visto", "Una pelicula verdaderamente brillante y aterradora de Stanley Kubrick", "Una obra maestra de horror psicologico")
+califs <- c(5, 4.5, 5)
+fuentes <- c("IMDb1", "IMDb2", "IMDb3")
+rev <- data.frame(califs, fuentes, comentarios)
+lista_resp <- list(Nombre = peli, Actores = act, Critica = rev)
+lista_resp
+
+```
