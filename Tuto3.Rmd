@@ -1,0 +1,112 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+Introduction to the Tidyverse
+
+```{r}
+#Installing and loading the package
+install.packages("gapminder")
+library("gapminder")
+gapminder
+```
+2. Data wrangling
+
+```{r}
+gapminder %>% filter(year == 1957)
+
+gapminder %>% filter(country == "China", year == 2002)
+
+gapminder %>% arrange(lifeExp)
+
+gapminder %>% arrange(desc(lifeExp))
+
+gapminder %>%  filter(year == 1957) %>% arrange(desc(pop))
+
+gapminder %>% mutate(lifeExp = lifeExp * 12)
+
+gapminder %>% mutate(lifeExpMonths = lifeExp * 12)
+
+gapminder %>% filter(year == 2007) %>% mutate(lifeExpMonths = 12 * lifeExp) %>% arrange(desc(lifeExpMonths))
+```
+
+3. Data visualization
+
+```{r}
+gapminder_2002 <- gapminder %>% filter(year == 2002)
+gapminder_2002
+
+ggplot(gapminder_2002, aes(x = pop, y = gdpPercap)) + geom_point()
+
+ggplot(gapminder_2002, aes(x = pop, y = lifeExp)) + geom_point()
+
+ggplot(gapminder_2002, aes(x = pop, y = lifeExp)) + geom_point() + scale_x_log10()
+
+ggplot(gapminder_2002, aes(x = pop, y = gdpPercap)) + geom_point() + scale_x_log10() + scale_y_log10()
+
+ggplot(gapminder_2002, aes(x = pop, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()
+
+ggplot(gapminder_2002, aes(x = pop, y = lifeExp, color = continent, size = gdpPercap)) + geom_point() + scale_x_log10()
+
+ggplot(gapminder_2002, aes(x = pop, y = lifeExp)) + geom_point() + scale_x_log10() + facet_wrap(~ continent)
+
+ggplot(gapminder, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10() + facet_wrap(~ year)
+
+```
+
+4. Grouping and Summarizing
+
+```{r}
+gapminder %>% summarize(medianLifeExp = median(lifeExp))
+
+gapminder %>% filter(year == 2002) %>% summarize(medianLifeExp = median(lifeExp))
+
+gapminder %>% filter(year == 2002) %>% summarize(medianLifeExp = median(lifeExp), maxGdpPercap = max(gdpPercap))
+
+gapminder %>% group_by(year) %>% summarize(medianLifeExp = median(lifeExp),maxGdpPercap = max(gdpPercap))
+
+gapminder %>% filter(year == 2002) %>% group_by(continent) %>% summarize(medianLifeExp = median(lifeExp),maxGdpPercap = max(gdpPercap))
+
+gapminder %>% group_by(continent, year) %>% summarize(medianLifeExp = median(lifeExp),maxGdpPercap = max(gdpPercap))
+
+por_anio <- gapminder %>% group_by(year) %>% summarize(medianLifeExp = median(lifeExp),maxGdpPercap = max(gdpPercap))
+
+ggplot(por_anio, aes(x = year, y = medianLifeExp)) + geom_point() + expand_limits(y = 0)
+
+anioycontinente <- gapminder %>% group_by(continent, year) %>% summarize(medianGdpPercap = median(gdpPercap))
+anioycontinente
+
+ggplot(anioycontinente, aes(x = year, y = medianGdpPercap, color = continent)) + geom_point() + expand_limits(y = 0)
+
+por_continente_2002 <- gapminder %>% filter(year == 2002) %>% group_by(continent) %>% summarize(medianGdpPercap = median(gdpPercap), medianLifeExp = median(lifeExp))
+
+ggplot(por_continente_2002, aes(x = medianGdpPercap, y = medianLifeExp, color = continent)) + geom_point()
+```
+
+5. Types of Visualizations
+
+
+```{r}
+por_anio2 <- gapminder %>% group_by(year) %>% summarize(medianGdpPercap = median(gdpPercap))
+ggplot(por_anio2, aes(x = year, y = medianGdpPercap)) + geom_line() + expand_limits(y = 0)
+
+anioycontinente2 <- gapminder %>% group_by(year, continent) %>% summarize(medianGdpPercap = median(gdpPercap))
+ggplot(anioycontinente2, aes(x = year, y = medianGdpPercap, color = continent)) + geom_line() + expand_limits(y = 0)
+
+por_continente_2002_2 <- gapminder %>% filter(year == 2002) %>% group_by(continent) %>% summarize(medianGdpPercap = median(gdpPercap))
+ggplot(por_continente_2002_2, aes(x = continent, y = medianGdpPercap)) + geom_col()
+
+europe_1982 <- gapminder %>%  filter(continent == "Africa",year == 1982)
+ggplot(europe_1982, aes(x = country, y = gdpPercap)) + geom_col()
+
+gapminder_1982 <- gapminder %>%  filter(year == 1982)
+ggplot(gapminder_1982, aes(x = pop)) + geom_histogram()
+
+ggplot(gapminder_1982, aes(x = pop)) + geom_histogram() + scale_x_log10()
+
+ggplot(gapminder_1982, aes(x = continent, y = gdpPercap)) + geom_boxplot() + scale_y_log10()
+
+ggplot(gapminder_1982, aes(x = continent, y = gdpPercap)) + geom_boxplot() + scale_y_log10() + ggtitle("Comparando PIB entre continentes")
+```
+
